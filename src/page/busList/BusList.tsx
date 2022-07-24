@@ -45,6 +45,8 @@ const BusList = () => {
                   }/${route.seq}`
                 )
               }}
+              sx={{ cursor: 'pointer' }}
+              borderBottom="1px solid rgba(128,128,128,.4)"
               key={route.stopId + route.route}
               container
             >
@@ -78,7 +80,7 @@ const BusList = () => {
                 alignItems="flex-end"
                 justifyContent="center"
               >
-                <Typography color="primary" sx={{ fontSize: '1.7rem' }}>
+                <Typography color="primary" sx={{ fontSize: '1.7rem', fontWeight: '600' }}>
                   {route.timeLeft ? `${Math.abs(route.timeLeft)}` : '-'}
                 </Typography>
                 <Typography color="text.primary" sx={{ fontSize: '1rem' }}>
