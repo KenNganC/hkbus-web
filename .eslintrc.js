@@ -15,6 +15,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint'],
   rules: {
+    'object-curly-newline': 'off',
     semi: ['error', 'never'],
     '@typescript-eslint/semi': 'off',
     'comma-dangle': 'off',
