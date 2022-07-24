@@ -13,9 +13,9 @@ const App = () => (
       <Container>
         <Routes>
           <Route path="/" element={<Navigate to="/busList" replace />} />
-          <Route path="busList" element={<BusList />} />
+          <Route path="/busList" element={<BusList />} />
           <Route
-            path="busDetail/:stopId/:route/:direction/:serviceType/:seq"
+            path="/busDetail/:stopId/:route/:direction/:serviceType/:seq"
             element={<BusDetail />}
           />
         </Routes>

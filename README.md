@@ -1,46 +1,51 @@
-# Getting Started with Create React App
+# HK Bus
+An application for show bus stop list / bus ETA using React.js.\
+\
+[Demo](https://hkbus.netlify.app/)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Installation and execution steps
+Package install:
 
-## Available Scripts
+### `npm install`
 
-In the project directory, you can run:
+Runs the app in the development mode:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Assumptions
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+For the simplicity, only using 荃景圍天橋 / 荃灣柴灣角街 for bus list. Configured in src/config.ts
 
-### `npm test`
+Only Support Traditional Chinese 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Choice of solutions
 
-### `npm run build`
+### Material UI
+Open-source React component library that implements Google's Material Design.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### React-Query
+Asynchronous State Management
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+More efficient and simple for fetching/ caching data. (comparing to Redux/Mobx...)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Luxon
 
-### `npm run eject`
+For time / date handling
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+More light-weight than moment.js (235K (66K gzipped) vs. 66K (20 gzipped))
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### React-Leaflet
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+For using OpenStreetMap
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## TBC
 
-## Learn More
+i18n, destination search, GPS for identify current stop
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Data Sources
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+All ETA data is from DATA.GOV.HK and respective providers
+
+
+
+
