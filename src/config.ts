@@ -15,4 +15,5 @@ const bound: Record<string, string> = {
   O: 'outbound',
   I: 'inbound'
 }
+
 export { defaultBusStops, routes, bound }
