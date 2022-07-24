@@ -22,7 +22,7 @@ const Container: React.FC<any> = ({ children }) => {
         alignItems="center"
         bgcolor="background.default"
       >
-        <Box height="100%" minWidth="600px" maxWidth="40vw">
+        <Box height="100%" width="100%" maxWidth="800px">
           {children}
         </Box>
       </Box>

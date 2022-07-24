@@ -74,13 +74,6 @@ const BusDetail = () => {
   const stopDetail = stopList?.find((stop) => stop.stop === stopId)
   return (
     <Box height="100%" width="100%" display="flex" flexDirection="column">
-      <Button
-        onClick={() => {
-          navigate(-1)
-        }}
-      >
-        返回
-      </Button>
       <Box flex={1} overflow="hidden">
         <Map key={stopDetail?.stop} lat={+(stopDetail?.lat || 0)} long={+(stopDetail?.long || 0)} />
       </Box>
@@ -99,13 +92,19 @@ const BusDetail = () => {
               onClick={stopOnClick}
             >
               <Grid item container padding={1} width="100%" flexDirection="column">
-                <Typography color="text.primary">{stop.name_tc}</Typography>
+                <Typography color="text.primary" sx={{ fontSize: '1.4rem' }}>
+                  {stop.name_tc}
+                </Typography>
                 {etaData?.some((eta) => eta.seq === +stop.seq) && (
                   <Grid>
                     {etaData.map(
                       (eta) =>
                         eta.timeLeft && (
-                          <Typography color="text.primary" key={eta.eta}>
+                          <Typography
+                            color="text.primary"
+                            sx={{ fontSize: '1.4rem' }}
+                            key={eta.eta}
+                          >
                             {`${Math.abs(eta.timeLeft)} 分鐘`}
                           </Typography>
                         )
@@ -117,6 +116,14 @@ const BusDetail = () => {
           )
         })}
       </Box>
+      <Button
+        sx={{ fontSize: '1.4rem' }}
+        onClick={() => {
+          navigate(-1)
+        }}
+      >
+        返回
+      </Button>
     </Box>
   )
 }
