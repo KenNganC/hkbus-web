@@ -37,7 +37,9 @@ const BusList = () => {
         <Grid
           onClick={() => {
             navigate(
-              `/busDetail/${route.stopId}/${route.route}/${bound[route.dir]}/${route.service_type}`
+              `/busDetail/${route.stopId}/${route.route}/${bound[route.dir]}/${
+                route.service_type
+              }/${route.seq}`
             )
           }}
           // eslint-disable-next-line react/no-array-index-key

@@ -30,23 +30,26 @@ const useStopList = () => {
 
 const useStopETA = () => {
   const now = DateTime.now()
-  const { stopId, route, serviceType, direction } = useParams()
-  const { isLoading, error, data } = useQuery(['stops', stopId], async () => {
-    if (!stopId || !route || !serviceType) return []
-    const stopETA = await getETA(stopId, route, serviceType)
-    const stopETAMapping = stopETA
-      .filter((etaItem) => bound[etaItem.dir] === direction)
-      .map((etaItem) => {
-        if (!etaItem.eta) return { ...etaItem, timeLeft: null }
-        const eta = DateTime.fromISO(etaItem.eta)
-        const timeLeft = now.diff(eta, ['minutes']).toObject().minutes
-        return {
-          ...etaItem,
-          timeLeft: timeLeft ? Math.round(timeLeft) : null
-        }
-      })
-    return stopETAMapping
-  })
+  const { stopId, route, serviceType, direction, seq } = useParams()
+  const { isLoading, error, data } = useQuery(
+    ['stops', stopId, route, serviceType, direction, seq],
+    async () => {
+      if (!stopId || !route || !serviceType || !seq) return []
+      const stopETA = await getETA(stopId, route, serviceType)
+      const stopETAMapping = stopETA
+        .filter((etaItem) => bound[etaItem.dir] === direction && etaItem.seq === +seq)
+        .map((etaItem) => {
+          if (!etaItem.eta) return { ...etaItem, timeLeft: null }
+          const eta = DateTime.fromISO(etaItem.eta)
+          const timeLeft = now.diff(eta, ['minutes']).toObject().minutes
+          return {
+            ...etaItem,
+            timeLeft: timeLeft ? Math.round(timeLeft) : null
+          }
+        })
+      return stopETAMapping
+    }
+  )
   return { isLoading, error, data }
 }
 const Map = ({ lat, long }: { lat: number; long: number }) => (
@@ -84,12 +87,12 @@ const BusDetail = () => {
       <Box flex={1} overflow="auto" width="100%">
         {stopList?.map((stop) => {
           const stopOnClick = () =>
-            navigate(`/busDetail/${stop.stop}/${route}/${direction}/${serviceType}`, {
+            navigate(`/busDetail/${stop.stop}/${route}/${direction}/${serviceType}/${stop.seq}`, {
               replace: true
             })
           return (
             <Grid
-              key={stop.stop + stop.bound}
+              key={stop.seq}
               container
               flexDirection="column"
               width="100%"
@@ -97,7 +100,7 @@ const BusDetail = () => {
             >
               <Grid item container padding={1} width="100%" flexDirection="column">
                 <Typography color="text.primary">{stop.name_tc}</Typography>
-                {etaData?.some((eta) => eta.stopId === stop.stop) && (
+                {etaData?.some((eta) => eta.seq === +stop.seq) && (
                   <Grid>
                     {etaData.map(
                       (eta) =>
