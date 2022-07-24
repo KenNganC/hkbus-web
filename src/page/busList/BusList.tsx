@@ -10,7 +10,6 @@ const useAllETA = () => {
   const now = DateTime.now()
   const { isLoading, error, data } = useQuery(['stopETA'], async () => {
     const res = await Promise.all(defaultBusStops.map((stop) => getAllETA(stop.stopId, stop.name)))
-
     const combinedETAData = res
       .flat()
       .filter((etaItem) => etaItem.eta_seq === 1 && etaItem.eta)
@@ -30,7 +29,6 @@ const useAllETA = () => {
 const BusList = () => {
   const { isLoading, error, data } = useAllETA()
   const navigate = useNavigate()
-  console.log(data)
   if (isLoading) return <Box>LOADING</Box>
   if (error) return <Box>ERROR</Box>
   return (
@@ -77,7 +75,7 @@ const BusList = () => {
             justifyContent="flex-end"
           >
             <Typography color="text.primary" variant="h6">
-              {route.timeLeft ? `${Math.abs(route.timeLeft)} min` : '-'}
+              {route.timeLeft ? `${Math.abs(route.timeLeft)} 分鐘` : '-'}
             </Typography>
           </Grid>
         </Grid>

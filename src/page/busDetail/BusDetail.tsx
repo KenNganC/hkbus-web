@@ -5,6 +5,7 @@ import { Box, Button, Typography, Grid } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import { DateTime } from 'luxon'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { getAllStop, getETA, getStopDetails } from '../../api/module/bus'
 import { bound } from '../../config'
 
@@ -48,25 +49,40 @@ const useStopETA = () => {
   })
   return { isLoading, error, data }
 }
+const Map = ({ lat, long }: { lat: number; long: number }) => (
+  <MapContainer center={[lat, long]} zoom={18}>
+    <TileLayer
+      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    />
+    <Marker position={[lat, long]}>
+      <Popup>
+        A pretty CSS3 popup. <br /> Easily customizable.
+      </Popup>
+    </Marker>
+  </MapContainer>
+)
 
 const BusDetail = () => {
   const navigate = useNavigate()
-  const { route, serviceType, direction } = useParams()
-  const { data: StopList } = useStopList()
+  const { route, serviceType, direction, stopId } = useParams()
+  const { data: stopList } = useStopList()
   const { data: etaData } = useStopETA()
-  console.log(etaData)
+  const stopDetail = stopList?.find((stop) => stop.stop === stopId)
   return (
-    <Box overflow="auto" height="100%" width="100%" display="flex" flexDirection="column">
+    <Box height="100%" width="100%" display="flex" flexDirection="column">
       <Button
         onClick={() => {
           navigate(-1)
         }}
       >
-        Back
+        返回
       </Button>
-      <Box flex={1}>1433</Box>
+      <Box flex={1} overflow="hidden">
+        <Map key={stopDetail?.stop} lat={+(stopDetail?.lat || 0)} long={+(stopDetail?.long || 0)} />
+      </Box>
       <Box flex={1} overflow="auto" width="100%">
-        {StopList?.map((stop) => {
+        {stopList?.map((stop) => {
           const stopOnClick = () =>
             navigate(`/busDetail/${stop.stop}/${route}/${direction}/${serviceType}`, {
               replace: true
@@ -87,7 +103,7 @@ const BusDetail = () => {
                       (eta) =>
                         eta.timeLeft && (
                           <Typography color="text.primary" key={eta.eta}>
-                            {`${Math.abs(eta.timeLeft)} min`}
+                            {`${Math.abs(eta.timeLeft)} 分鐘`}
                           </Typography>
                         )
                     )}
