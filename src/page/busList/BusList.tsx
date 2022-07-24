@@ -36,7 +36,7 @@ const BusList = () => {
     <Box height="100%">
       <PullToRefresh onRefresh={refetch}>
         <Box overflow="auto" height="100%">
-          {data?.map((route, index) => (
+          {data?.map((route) => (
             <Grid
               onClick={() => {
                 navigate(
@@ -45,8 +45,7 @@ const BusList = () => {
                   }/${route.seq}`
                 )
               }}
-              // eslint-disable-next-line react/no-array-index-key
-              key={index}
+              key={route.stopId + route.route}
               container
             >
               <Grid
@@ -58,11 +57,11 @@ const BusList = () => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <Typography color="text.primary" sx={{ fontSize: '1.8rem' }}>
+                <Typography color="text.primary" sx={{ fontSize: '1.8rem', fontWeight: 'bold' }}>
                   {route.route}
                 </Typography>
               </Grid>
-              <Grid xs={5} item container padding={1} direction="column">
+              <Grid xs={7} item container padding={1} direction="column">
                 <Typography color="text.primary" sx={{ fontSize: '1.4rem' }}>
                   {`往 ${route.dest_tc}`}
                 </Typography>
@@ -71,16 +70,19 @@ const BusList = () => {
                 </Typography>
               </Grid>
               <Grid
-                xs={4}
+                xs={2}
                 item
                 container
                 paddingRight={3}
-                direction="row"
-                alignItems="center"
-                justifyContent="flex-end"
+                direction="column"
+                alignItems="flex-end"
+                justifyContent="center"
               >
-                <Typography color="text.primary" sx={{ fontSize: '1.4rem' }}>
-                  {route.timeLeft ? `${Math.abs(route.timeLeft)} 分鐘` : '-'}
+                <Typography color="primary" sx={{ fontSize: '1.7rem' }}>
+                  {route.timeLeft ? `${Math.abs(route.timeLeft)}` : '-'}
+                </Typography>
+                <Typography color="text.primary" sx={{ fontSize: '1rem' }}>
+                  {route.timeLeft ? '分鐘' : ''}
                 </Typography>
               </Grid>
             </Grid>

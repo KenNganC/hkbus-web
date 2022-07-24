@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable implicit-arrow-linebreak */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Button, Typography, Grid } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -68,10 +68,15 @@ const Map = ({ lat, long }: { lat: number; long: number }) => (
 
 const BusDetail = () => {
   const navigate = useNavigate()
-  const { route, serviceType, direction, stopId } = useParams()
-  const { data: stopList } = useStopList()
+  const { route, serviceType, direction, stopId, seq } = useParams()
+  const { data: stopList, isLoading } = useStopList()
   const { data: etaData } = useStopETA()
   const stopDetail = stopList?.find((stop) => stop.stop === stopId)
+  useEffect(() => {
+    if (seq && !isLoading) {
+      document.getElementById(seq)?.scrollIntoView()
+    }
+  }, [seq, isLoading])
   return (
     <Box height="100%" width="100%" display="flex" flexDirection="column">
       <Box flex={1} overflow="hidden">
@@ -85,6 +90,7 @@ const BusDetail = () => {
             })
           return (
             <Grid
+              id={stop.seq}
               key={stop.seq}
               container
               flexDirection="column"
@@ -96,17 +102,18 @@ const BusDetail = () => {
                   {stop.name_tc}
                 </Typography>
                 {etaData?.some((eta) => eta.seq === +stop.seq) && (
-                  <Grid>
+                  <Grid p={2}>
                     {etaData.map(
                       (eta) =>
                         eta.timeLeft && (
-                          <Typography
-                            color="text.primary"
-                            sx={{ fontSize: '1.4rem' }}
-                            key={eta.eta}
-                          >
-                            {`${Math.abs(eta.timeLeft)} 分鐘`}
-                          </Typography>
+                          <Box key={eta.eta} display="flex" alignItems="flex-end" gap={1}>
+                            <Typography color="primary" sx={{ fontSize: '1.6rem' }}>
+                              {`${Math.abs(eta.timeLeft)}`}
+                            </Typography>
+                            <Typography color="text.primary" sx={{ fontSize: '1rem' }} gutterBottom>
+                              分鐘
+                            </Typography>
+                          </Box>
                         )
                     )}
                   </Grid>
